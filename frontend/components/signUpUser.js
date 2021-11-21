@@ -22,13 +22,23 @@ const signUpUser = () => {
 
   return (
     <>
-      username:
-      <input onChange={e => setUsername(e.target.value)} />
-      <br />
-      password:
-      <input onChange={e => setPassword(e.target.value)} />
-      <br />
-      <Button onClick={() => signUp}> Sign up </Button>
+      <div
+        style={
+                  {
+                    border: '2px solid black',
+                    width: '300px',
+                  }
+                }
+      >
+        <h1>Sign up</h1>
+        username:
+        <input onChange={e => setUsername(e.target.value)} />
+        <br />
+        password:
+        <input onChange={e => setPassword(e.target.value)} />
+        <br />
+        <Button onClick={() => signUp}> Sign up </Button>
+      </div>
     </>
   )
 }
