@@ -4,6 +4,22 @@ const router = express.Router()
 const User = require('../models/user')
 const isAuthenticated = require('../middlewares/isAuthenticated')
 
+// middleware for checking whether logged in
+router.post('/', async (req, res) => {
+  // could also send back username (or whatever)
+  if (typeof (req.session) !== 'undefined') {
+    if (typeof req.session.username !== 'undefined') {
+      if (req.session.username !== '' && req.session.username !== null) {
+        res.send(
+          { data: 'user is logged in', username: req.session.username },
+        )
+        return
+      }
+    }
+  }
+  res.send('user not logged in')
+})
+
 // signup
 router.post('/signup', async (req, res, next) => {
   const { username, password } = req.body
@@ -49,7 +65,7 @@ router.post('/login', async (req, res, next) => {
 router.post('/logout', isAuthenticated, (req, res) => {
   req.session.username = null
   req.session.password = null
-  res.send('user is logged out')
+  res.send('user is logged out // session terminated')
 })
 
 module.exports = router

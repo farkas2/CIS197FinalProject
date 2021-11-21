@@ -5,10 +5,11 @@ const Question = require('../models/question')
 const isAuthenticated = require('../middlewares/isAuthenticated')
 
 // //questions (get all questions)
-router.get('/questions', isAuthenticated, async (req, res, next) => {
+router.get('/questions', async (req, res, next) => {
   try {
     const mongooseResponse = await Question.find()
-    res.send('questions grabbed')
+    res.json(mongooseResponse)
+    // res.send('questions grabbed')
   } catch (err) {
     const err2 = new Error('Getting questions has problems')
     next(err2)
