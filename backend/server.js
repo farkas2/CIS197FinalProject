@@ -8,7 +8,7 @@ const AccountRouter = require('./routes/account')
 
 const app = express()
 
-const MONGO_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/HW6'
+const MONGO_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/FinalProject'
 
 mongoose.connect(MONGO_URI, {
   useNewUrlParser: true,
