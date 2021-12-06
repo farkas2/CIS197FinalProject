@@ -11,15 +11,20 @@ const signUpUser = () => {
   const hist = useNavigate()
 
   const signUp = async () => {
+    console.log('about to make sign up request')
+    console.log({ username, password })
     const { data } = await axios.post('/account/signup', { username, password }) // POST request
+    console.log(data)
     if (data === 'user created') {
+      console.log('tryna create user')
       setSucceeded(true)
+      console.log('going to hist')
       hist('/')
     } else {
       alert('Issues occured in account creation-- try making an account with a differe username!')
     }
   }
-
+  console.log('sign up rendering')
   return (
     <>
       <div
@@ -37,7 +42,7 @@ const signUpUser = () => {
         password:
         <input onChange={e => setPassword(e.target.value)} />
         <br />
-        <Button onClick={() => signUp}> Sign up </Button>
+        <Button onClick={() => signUp()}> Sign up </Button>
       </div>
     </>
   )

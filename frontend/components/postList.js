@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from 'react'
 import NoLogBlock from './noLoginQuestionBlock'
 
-const questionList = ({ questions, loggedIn }) => {
+const postList = ({ posts, loggedIn }) => {
   // console.log('logged in inside question list')
   // console.log(loggedIn)
   let count = 0
-  return questions.map(x => {
-    const str = `{question${count}}`
+  return posts.map(x => {
+    const str = `{post${count}}`
     count += 1
     return (
       <div key={str}>
-        <NoLogBlock question={x.questionText} author={x.author} answer={x.answer} loggedIn={loggedIn[0]} id={x._id} />
+        <NoLogBlock postText={x.postText} author={x.author} postPlay={x.postPlay} comments={x.comments} loggedIn={loggedIn[0]} id={x._id} />
       </div>
     )
   })
 }
 
-export default questionList
+export default postList

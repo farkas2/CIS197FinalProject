@@ -1,5 +1,7 @@
 const express = require('express')
 
+const axios = require('axios')
+
 const router = express.Router()
 const Post = require('../models/post')
 const isAuthenticated = require('../middlewares/isAuthenticated')
@@ -19,9 +21,9 @@ router.get('/Post', async (req, res, next) => {
 
 // add Post
 router.post('/Posts/add', isAuthenticated, async (req, res, next) => {
-  const { postText, author } = req.body
+  const { postPlay, postText, author } = req.body
   try {
-    await Post.create({ postText, author })
+    await Post.create({ postPlay, postText, author })
     res.send('Post created-- great success')
   } catch (err) {
     // console.log(err)
@@ -31,17 +33,28 @@ router.post('/Posts/add', isAuthenticated, async (req, res, next) => {
   }
 })
 
-// answer a question
+// pull the folger tetx from the given link
+router.post('/Posts/pullPlay', async (req, res, next) => {
+  const { playURL } = req.body
+  const playGetReturn = await axios.get(playURL)
+  res.send(playGetReturn.data)
+})
+
+// add a comment
 router.post('/Posts/addComment', isAuthenticated, async (req, res, next) => {
   const { _id, comment, author } = req.body
   // find a question by ID, then update it's answer
   // const temp = await Post.findOneAndUpdate({ _id }, { comment })
   const temp = await Post.findById(_id)
 
-  // handle first comment case
+  // if first comment we have to manually insert comments field
   if (typeof temp.comments === 'undefined') {
     try {
-      await Post.findOneAndUpdate({ _id }, { comments: [{ comment, author }] })
+      const username = req
+      const username2 = username.session
+      const username3 = username2.username
+
+      await Post.findOneAndUpdate({ _id }, { comments: [{ comment, username3 }] })
       res.send('comment provided-- great success')
     } catch (err) {
       const err2 = new Error('Comment creation has problems')
@@ -49,11 +62,15 @@ router.post('/Posts/addComment', isAuthenticated, async (req, res, next) => {
     }
     return
   }
-  // otherwise append the comments
+  // otherwise append the new comment to list of existing comments
   try {
-    console.log(temp.comments)
+    const username = req
+    const username2 = username.session
+    const username3 = username2.username
+
+    // console.log(temp.comments)
     // add the comment to the array
-    temp.comments.push({ comment, author })
+    temp.comments.push({ comment, username3 })
     await Post.findOneAndUpdate({ _id }, { comments: temp.comments })
     res.send('comment provided-- great success')
   } catch (err) {
